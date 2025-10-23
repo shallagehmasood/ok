@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:signal_bot/models/models.dart';
 
 class ApiService {
-  final String baseUrl = 'http://localhost:8000'; // آدرس سرور خود را وارد کنید
+  final String baseUrl = 'http://178.63.171.244:8000'; // آدرس سرور خود را وارد کنید
 
   // ارسال تنظیمات به سرور
   Future<void> setSettings(int userId, SettingsModel settings) async {
