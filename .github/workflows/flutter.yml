@@ -39,7 +39,7 @@ jobs:
     # مرحله ششم: ارسال خروجی به بخش‌های مختلف (اختیاری)
     # ارسال APK به Release در GitHub
     - name: Upload APK to GitHub Release
-      uses: ghaction/upload-artifact@v2
+      uses: actions/upload-artifact@v2   # تغییر به این اکشن
       with:
         name: app-release
         path: build/app/outputs/flutter-apk/app-release.apk
@@ -53,3 +53,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Deploy to Play Store (اگر نیاز دارید)
+      run: |
+        echo "Deploying to Play Store..."
+        # شما می‌توانید از یک اکشن یا اسکریپت سفارشی برای استقرار به Google Play استفاده کنید.
+        # برای مثال از Fastlane برای استقرار اپلیکیشن به Play Store می‌توانید استفاده کنید.
