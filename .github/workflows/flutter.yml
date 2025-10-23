@@ -1,0 +1,55 @@
+name: Flutter CI/CD Pipeline
+
+# مشخص کردن ورژن‌هایی که می‌خواهیم در آن‌ها این workflow اجرا شود.
+on:
+  push:
+    branches:
+      - main    # اجرای workflow تنها هنگام push به برنچ main
+  pull_request:
+    branches:
+      - main    # اجرای workflow هنگام ایجاد PR به برنچ main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest  # استفاده از محیط اوبونتو برای اجرای workflow
+
+    steps:
+    # مرحله اول: Checkout کد پروژه
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    # مرحله دوم: نصب Flutter
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.0.0'  # ورژن Flutter مورد نظر خود را وارد کنید
+
+    # مرحله سوم: نصب وابستگی‌ها
+    - name: Install dependencies
+      run: flutter pub get
+
+    # مرحله چهارم: اجرای تست‌ها (اختیاری)
+    - name: Run tests
+      run: flutter test
+
+    # مرحله پنجم: ساخت APK برای Android (اختیاری)
+    - name: Build APK
+      run: flutter build apk --release
+
+    # مرحله ششم: ارسال خروجی به بخش‌های مختلف (اختیاری)
+    # ارسال APK به Release در GitHub
+    - name: Upload APK to GitHub Release
+      uses: ghaction/upload-artifact@v2
+      with:
+        name: app-release
+        path: build/app/outputs/flutter-apk/app-release.apk
+
+  # استقرار (اختیاری)
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build  # اطمینان از این که مرحله build قبل از این مرحله اجرا شده باشد
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
